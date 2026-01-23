@@ -1,6 +1,6 @@
 import React from 'react';
 
-const VoteTable = ({ data }) => {
+const VoteTable = ({ data, onVote }) => {
   return (
     <div style={{ padding: '20px' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
@@ -11,6 +11,7 @@ const VoteTable = ({ data }) => {
             <th style={cellStyle}>Perenimi</th>
             <th style={cellStyle}>Hääletuse aeg</th>
             <th style={cellStyle}>Otsus</th>
+            <th style={cellStyle}>Tegevus</th>
           </tr>
         </thead>
         <tbody>
@@ -26,6 +27,10 @@ const VoteTable = ({ data }) => {
                 fontWeight: 'bold'
               }}>
                 {row.otsus || 'Ootab...'}
+              </td>
+              <td>
+                <button onClick={() => onVote(row.id, 'poolt')}>Poolt</button>
+                <button onClick={() => onVote(row.id, 'vastu')}>Vastu</button>
               </td>
             </tr>
           ))}

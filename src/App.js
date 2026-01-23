@@ -6,6 +6,7 @@ function App() {
   const [votes, setVotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Andmete laadimine
   useEffect(() => {
     // Fetch data from our Node.js API
     fetch('http://localhost:5000/api/votes')
@@ -17,6 +18,23 @@ function App() {
       .catch(err => console.error("Viga andmete laadimisel:", err));
   }, []);
 
+  // Haaletamine
+  const handleVote = async (id, valik) => {
+    try {
+      await fetch(`http://localhost:5000/api/haaleta/${id}/${valik}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, otsus: valik })
+      });
+      setVotes(prev => prev.map(v => v.id === id ? { ...v, otsus: valik } : v));
+      
+    } catch (error) {
+      console.error("Võrguviga:", error);
+    }
+  };
+  
+
+
   console.log(votes)
   
   if (loading) return <h1>Laadin andmeid...</h1>;
@@ -27,7 +45,7 @@ function App() {
         <h1>
           Hääletussüsteem
         </h1>
-        <VoteTable data={votes} />
+        <VoteTable data={votes} onVote={handleVote} />
       </header>
     </div>
   );
