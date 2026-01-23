@@ -3,7 +3,7 @@ CREATE TABLE HAALETUS (
     eesnimi VARCHAR(50) NOT NULL,
     perenimi VARCHAR(50) NOT NULL,
     haalestuse_aeg TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    otsus ENUM('poolt', 'vastu') DEFAULT NULL
+    otsus ENUM('ootel', 'poolt', 'vastu') NOT NULL DEFAULT 'ootel'
 );
 
 CREATE TABLE TULEMUSED (
