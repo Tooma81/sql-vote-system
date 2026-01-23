@@ -42,6 +42,20 @@ app.put('/api/haaleta/:id/:otsus', (req, res) => {
     });
 });
 
+app.put('/api/votes/reset', (req, res) => {
+
+    const sql = "UPDATE HAALETUS SET otsus = DEFAULT";
+    
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Viga andmebaasis:", err);
+            return res.status(500).json({ error: "Häälte lähestamine ebaõnnestus" });
+        }
+
+        res.json({ message: "Hääled edukalt lähestatud!" });
+    });
+});
+
 app.listen(5000, () => {
     console.log("Server running on port 5000");
 });
