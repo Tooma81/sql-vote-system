@@ -8,4 +8,5 @@ INSERT INTO HAALETUS (eesnimi, perenimi) VALUES
 ('Andres', 'Saar'),
 ('Ene', 'Pärn'),
 ('Martin', 'Rebane'),
-('Kätlin', 'Ilves');
+('Kätlin', 'Ilves'),
+('Toomas', 'Kaarel');
