@@ -1,6 +1,7 @@
 import './App.css';
 import VoteTable from './tables/VoteTable';
 import { useEffect, useState } from 'react';
+import { VoteTimer } from './VoteTimer';
 
 function App() {
   const [votes, setVotes] = useState([]);
@@ -32,10 +33,9 @@ function App() {
       console.error("Võrguviga:", error);
     }
   };
-  
 
-
-  console.log(votes)
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + 300);
   
   if (loading) return <h1>Laadin andmeid...</h1>;
 
@@ -45,6 +45,7 @@ function App() {
         <h1>
           Hääletussüsteem
         </h1>
+        <VoteTimer expiryTimestamp={time} />
         <VoteTable data={votes} onVote={handleVote} />
       </header>
     </div>
