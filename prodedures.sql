@@ -1,0 +1,16 @@
+CREATE PROCEDURE ARVUTA_TULEMUS() 
+BEGIN
+    INSERT INTO TULEMUSED(h_alguse_aeg, haaletanute_arv, poolt_haalte_arv, vastu_haalte_arv) 
+    SELECT 
+    (SELECT MIN(muutmise_aeg) FROM LOGI), 
+        COUNT(CASE WHEN otsus != 'ootel' THEN 1 END),
+        COUNT(CASE WHEN otsus = 'poolt' THEN 1 END),
+        COUNT(CASE WHEN otsus = 'vastu' THEN 1 END)
+    FROM HAALETUS;
+END;
+
+CREATE PROCEDURE LAHESTA_HAALETUS()
+BEGIN
+    UPDATE HAALETUS SET otsus = DEFAULT;
+    TRUNCATE TABLE LOGI;
+END;

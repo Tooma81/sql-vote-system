@@ -44,7 +44,7 @@ app.put('/api/haaleta/:id/:otsus', (req, res) => {
 
 app.put('/api/votes/reset', (req, res) => {
 
-    const sql = "UPDATE HAALETUS SET otsus = DEFAULT";
+    const sql = "CALL LAHESTA_HAALETUS";
     
     db.query(sql, (err, result) => {
         if (err) {
@@ -53,6 +53,20 @@ app.put('/api/votes/reset', (req, res) => {
         }
 
         res.json({ message: "Hääled edukalt lähestatud!" });
+    });
+});
+
+app.put('/api/votes/finish', (req, res) => {
+
+    const sql = "CALL ARVUTA_TULEMUS";
+    
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Viga andmebaasis:", err);
+            return res.status(500).json({ error: "Tulemuste arvutamine ebaõnnestus" });
+        }
+
+        res.json({ message: "Tulemused edukalt arvutatud" });
     });
 });
 
