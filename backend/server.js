@@ -42,6 +42,20 @@ app.put('/api/haaleta/:id/:otsus', (req, res) => {
     });
 });
 
+app.put('/api/votes/start', (req, res) => {
+
+    const sql = "CALL ALUSTA_HAALETUS";
+    
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Viga andmebaasis:", err);
+            return res.status(500).json({ error: "Hääletuse alustamine ebaõnnestus" });
+        }
+
+        res.json({ message: "Hääletus edukalt alustatud!" });
+    });
+});
+
 app.put('/api/votes/reset', (req, res) => {
 
     const sql = "CALL LAHESTA_HAALETUS";

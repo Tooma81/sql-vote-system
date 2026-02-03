@@ -7,6 +7,7 @@ function App() {
   const [votes, setVotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   // Andmete laadimine
   useEffect(() => {
     // Fetch data from our Node.js API
@@ -27,12 +28,32 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, otsus: valik })
       });
-      setVotes(prev => prev.map(v => v.id === id ? { ...v, otsus: valik } : v));
-      
+      setVotes(prev => prev.map(v => v.id === id ? { ...v, otsus: valik } : v));      
     } catch (error) {
       console.error("Võrguviga:", error);
     }
   };
+
+  const handleFinshVote = async () => {
+    try {
+      await fetch(`http://localhost:5000/api/votes/finish`, {
+        method: 'PUT',
+      });
+    } catch (error) {
+      console.error("Võrguviga:", error);
+    }
+  }
+
+  const handleRestartVote = async () => {
+    try {
+      await fetch(`http://localhost:5000/api/votes/reset`, {
+        method: 'PUT',
+      });
+      setVotes(prev => prev.map(v => ({ ...v, otsus: 'ootel' })))
+    } catch (error) {
+      console.error("Võrguviga:", error);
+    }
+  }
 
   const time = new Date();
   time.setSeconds(time.getSeconds() + 300);
@@ -45,7 +66,11 @@ function App() {
         <h1>
           Hääletussüsteem
         </h1>
-        <VoteTimer expiryTimestamp={time} />
+        <VoteTimer 
+          expiryTimestamp={time} 
+          onExpire={handleFinshVote} 
+          onRestart={handleRestartVote}
+        />
         <VoteTable data={votes} onVote={handleVote} />
       </header>
     </div>
