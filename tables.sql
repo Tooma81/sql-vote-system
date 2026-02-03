@@ -8,7 +8,7 @@ CREATE TABLE HAALETUS (
 
 CREATE TABLE TULEMUSED (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    h_alguse_aeg DATETIME NOT NULL,
+    h_alguse_aeg DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     haaletanute_arv INT DEFAULT 0,
     poolt_haalte_arv INT DEFAULT 0,
     vastu_haalte_arv INT DEFAULT 0

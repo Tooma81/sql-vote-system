@@ -6,6 +6,7 @@ import { VoteTimer } from './VoteTimer';
 function App() {
   const [votes, setVotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [voteActive, setVoteActive] = useState(false);
 
 
   // Andmete laadimine
@@ -39,6 +40,7 @@ function App() {
       await fetch(`http://localhost:5000/api/votes/finish`, {
         method: 'PUT',
       });
+      setVoteActive(false);
     } catch (error) {
       console.error("Võrguviga:", error);
     }
@@ -49,10 +51,15 @@ function App() {
       await fetch(`http://localhost:5000/api/votes/reset`, {
         method: 'PUT',
       });
+      setVoteActive(false);
       setVotes(prev => prev.map(v => ({ ...v, otsus: 'ootel' })))
     } catch (error) {
       console.error("Võrguviga:", error);
     }
+  }
+
+  const handleStartVote = async () => {
+    setVoteActive(true);
   }
 
   const time = new Date();
@@ -70,8 +77,9 @@ function App() {
           expiryTimestamp={time} 
           onExpire={handleFinshVote} 
           onRestart={handleRestartVote}
+          onStart={handleStartVote}
         />
-        <VoteTable data={votes} onVote={handleVote} />
+        <VoteTable voteActive={voteActive} data={votes} onVote={handleVote} />
       </header>
     </div>
   );

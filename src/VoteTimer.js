@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTimer } from 'react-timer-hook';
 
-export function VoteTimer({ expiryTimestamp, onExpire, onRestart, }) {
+export function VoteTimer({ expiryTimestamp, onExpire, onRestart, onStart }) {
   const {
     seconds,
     minutes,
@@ -19,7 +19,12 @@ export function VoteTimer({ expiryTimestamp, onExpire, onRestart, }) {
         <span>{minutes}</span>:
         {seconds < 10 ? <span>0{seconds}</span> : <span>{seconds}</span>}
       </div>
-      <button onClick={start}>Start</button>
+      <button onClick={() => {
+        const time = new Date();
+        time.setSeconds(time.getSeconds() + 300);
+        start(time);
+        onStart();
+      }}>Start</button>
       <button onClick={pause}>Pause</button>
       <button onClick={resume}>Resume</button>
       <button onClick={() => {

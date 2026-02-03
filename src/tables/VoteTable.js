@@ -1,6 +1,6 @@
 import React from 'react';
 
-const VoteTable = ({ data, onVote }) => {
+const VoteTable = ({ voteActive, data, onVote }) => {
   return (
     <div style={{ padding: '20px' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
@@ -9,9 +9,8 @@ const VoteTable = ({ data, onVote }) => {
             <th style={cellStyle}>ID</th>
             <th style={cellStyle}>Eesnimi</th>
             <th style={cellStyle}>Perenimi</th>
-            <th style={cellStyle}>Hääletuse aeg</th>
             <th style={cellStyle}>Otsus</th>
-            <th style={cellStyle}>Tegevus</th>
+            {voteActive ? <th style={cellStyle}>Tegevus</th> : <th></th>}
           </tr>
         </thead>
         <tbody>
@@ -20,7 +19,6 @@ const VoteTable = ({ data, onVote }) => {
               <td style={cellStyle}>{row.id}</td>
               <td style={cellStyle}>{row.eesnimi}</td>
               <td style={cellStyle}>{row.perenimi}</td>
-              <td style={cellStyle}>{new Date(row.haalestuse_aeg).toLocaleString('et-EE')}</td>
               <td style={{ 
                 ...cellStyle, 
                 color: row.otsus === 'poolt' ? 'green' : row.otsus === 'vastu' ? 'red' : 'gray',
@@ -28,10 +26,12 @@ const VoteTable = ({ data, onVote }) => {
               }}>
                 {row.otsus || 'Ootab...'}
               </td>
-              <td>
-                <button onClick={() => onVote(row.id, 'poolt')}>Poolt</button>
-                <button onClick={() => onVote(row.id, 'vastu')}>Vastu</button>
-              </td>
+              {voteActive ? 
+                <td>
+                  <button onClick={() => onVote(row.id, 'poolt')}>Poolt</button>
+                  <button onClick={() => onVote(row.id, 'vastu')}>Vastu</button>
+                </td>
+              : <td></td>}
             </tr>
           ))}
         </tbody>
