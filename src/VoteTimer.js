@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTimer } from 'react-timer-hook';
 
-export function VoteTimer({ expiryTimestamp, onExpire, onRestart, onStart }) {
+export function VoteTimer({ expiryTimestamp, onExpire, onRestart, onStart, voteActive }) {
   const {
     seconds,
     minutes,
@@ -19,21 +19,26 @@ export function VoteTimer({ expiryTimestamp, onExpire, onRestart, onStart }) {
         <span>{minutes}</span>:
         {seconds < 10 ? <span>0{seconds}</span> : <span>{seconds}</span>}
       </div>
-      <button onClick={() => {
-        const time = new Date();
-        time.setSeconds(time.getSeconds() + 300);
-        start(time);
-        onStart();
-      }}>Start</button>
-      <button onClick={pause}>Pause</button>
-      <button onClick={resume}>Resume</button>
-      <button onClick={() => {
-        // Restarts to 5 minutes timer
-        const time = new Date();
-        time.setSeconds(time.getSeconds() + 300);
-        restart(time, false); // Do not start timer after restart
-        onRestart();
-      }}>Restart</button>
+      {!voteActive ? 
+        <button onClick={() => {
+          const time = new Date();
+          time.setSeconds(time.getSeconds() + 300);
+          start(time);
+          onStart();
+        }}>Start</button>
+      : 
+      <>
+        <button onClick={pause}>Paus</button>
+        <button onClick={resume}>Jätka</button>
+        <button onClick={() => {
+          // Restarts to 5 minutes timer
+          const time = new Date();
+          time.setSeconds(time.getSeconds() + 300);
+          restart(time, false); // Do not start timer after restart
+          onRestart();
+        }}>Taaskäivita</button>
+      </>}
     </div>
+     
   );
 }

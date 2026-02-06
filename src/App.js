@@ -78,6 +78,7 @@ function App() {
           onExpire={handleFinshVote} 
           onRestart={handleRestartVote}
           onStart={handleStartVote}
+          voteActive={voteActive}
         />
         <VoteTable voteActive={voteActive} data={votes} onVote={handleVote} />
       </header>
