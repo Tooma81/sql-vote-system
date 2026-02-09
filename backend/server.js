@@ -22,6 +22,22 @@ app.get('/api/votes', (req, res) => {
     });
 });
 
+app.get('/api/results', (req, res) => {
+    const sql = "SELECT * FROM TULEMUSED";
+    db.query(sql, (err, results) => {
+        if (err) return res.json(err);
+        return res.json(results);
+    });
+});
+
+app.get('/api/lastresult', (req, res) => {
+    const sql = "SELECT * FROM TULEMUSED ORDER BY id DESC LIMIT 1";
+    db.query(sql, (err, results) => {
+        if (err) return res.json(err);
+        return res.json(results);
+    });
+});
+
 // PUT meetod hääle uuendamiseks
 app.put('/api/haaleta/:id/:otsus', (req, res) => {
     const { id, otsus } = req.params;

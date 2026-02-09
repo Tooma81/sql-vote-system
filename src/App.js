@@ -1,12 +1,15 @@
 import './App.css';
 import VoteTable from './tables/VoteTable';
+import ResultTable from './tables/ResultTable';
 import { useEffect, useState } from 'react';
 import { VoteTimer } from './VoteTimer';
 
 function App() {
   const [votes, setVotes] = useState([]);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [voteActive, setVoteActive] = useState(false);
+  const [voteFinished, setVoteFinished] = useState(false);
 
 
   // Andmete laadimine
@@ -41,6 +44,14 @@ function App() {
         method: 'PUT',
       });
       setVoteActive(false);
+      setVoteFinished(true);
+      fetch('http://localhost:5000/api/lastresult')
+      .then(res => res.json())
+      .then(data => {
+        setResults(data);
+        setLoading(false);
+      })
+      .catch(err => console.error("Viga andmete laadimisel:", err));
     } catch (error) {
       console.error("Võrguviga:", error);
     }
@@ -52,6 +63,7 @@ function App() {
         method: 'PUT',
       });
       setVoteActive(false);
+      setVoteFinished(false);
       setVotes(prev => prev.map(v => ({ ...v, otsus: 'ootel' })))
     } catch (error) {
       console.error("Võrguviga:", error);
@@ -59,7 +71,16 @@ function App() {
   }
 
   const handleStartVote = async () => {
-    setVoteActive(true);
+    try {
+      await fetch(`http://localhost:5000/api/votes/start`, {
+        method: 'PUT',
+      });
+      setVoteActive(true);
+      setVoteFinished(false);
+      setVotes(prev => prev.map(v => ({ ...v, otsus: 'ootel' })))
+    } catch (error) {
+      console.error("Võrguviga:", error);
+    }
   }
 
   const time = new Date();
@@ -80,6 +101,9 @@ function App() {
           onStart={handleStartVote}
           voteActive={voteActive}
         />
+        {voteFinished ?
+          <ResultTable data={results} />
+        : <></>}
         <VoteTable voteActive={voteActive} data={votes} onVote={handleVote} />
       </header>
     </div>

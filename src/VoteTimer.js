@@ -1,7 +1,12 @@
 import React from 'react';
 import { useTimer } from 'react-timer-hook';
 
-export function VoteTimer({ expiryTimestamp, onExpire, onRestart, onStart, voteActive }) {
+export function VoteTimer({ 
+    expiryTimestamp, 
+    onExpire, 
+    onRestart, 
+    onStart, 
+    voteActive }) {
   const {
     seconds,
     minutes,
@@ -23,7 +28,7 @@ export function VoteTimer({ expiryTimestamp, onExpire, onRestart, onStart, voteA
         <button onClick={() => {
           const time = new Date();
           time.setSeconds(time.getSeconds() + 300);
-          start(time);
+          restart(time);
           onStart();
         }}>Start</button>
       : 
@@ -37,6 +42,13 @@ export function VoteTimer({ expiryTimestamp, onExpire, onRestart, onStart, voteA
           restart(time, false); // Do not start timer after restart
           onRestart();
         }}>Taaskäivita</button>
+        <button onClick={() => {
+          const time = new Date();
+          time.setSeconds(time.getSeconds());
+          restart(time);
+        }}>
+          Lõpeta kohe
+        </button>
       </>}
     </div>
      
